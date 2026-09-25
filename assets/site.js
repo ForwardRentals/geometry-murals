@@ -41,9 +41,16 @@ document.querySelectorAll('.slideshow').forEach((ss) => {
 
 // Background video: respect reduced-motion preference
 const bgVideo = document.querySelector('.bg-video');
-if (bgVideo && matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  bgVideo.removeAttribute('autoplay');
-  bgVideo.pause();
+if (bgVideo) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    bgVideo.removeAttribute('autoplay');
+    bgVideo.pause();
+  } else {
+    // Kick playback if the browser skipped autoplay (e.g. tab opened in background)
+    const kick = () => bgVideo.paused && bgVideo.play().catch(() => {});
+    bgVideo.addEventListener('canplay', kick, { once: true });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
+  }
 }
 
 // Mobile menu

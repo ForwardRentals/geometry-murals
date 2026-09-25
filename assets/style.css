@@ -8,6 +8,12 @@
   --orange: #faa31b;     /* lightAccent */
   --maroon: #4f142e;     /* accent */
   --white: #fff;
+  /* Squarespace palette tokens referenced by the copied per-block CSS */
+  --darkAccent-hsl: 203.82, 52.31%, 25.49%;
+  --accent-hsl: 333.56, 59.6%, 19.41%;
+  --lightAccent-hsl: 36.59, 95.71%, 54.31%;
+  --black-hsl: 45.33, 100%, 55.1%;
+  --white-hsl: 0, 0%, 100%;
 
   --sqs-site-gutter: 3vw;
   --sqs-mobile-site-gutter: 6vw;
