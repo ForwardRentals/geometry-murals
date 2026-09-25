@@ -23,6 +23,15 @@ document.querySelectorAll('.slideshow').forEach((ss) => {
     if (Math.abs(dx) > 40) show(dx < 0 ? i + 1 : i - 1);
     x0 = null;
   });
+  // Autoplay (Squarespace setting per gallery); pauses while hovered or off-screen
+  const secs = +ss.dataset.autoplay;
+  if (secs && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let hover = false, visible = false;
+    ss.addEventListener('mouseenter', () => { hover = true; });
+    ss.addEventListener('mouseleave', () => { hover = false; });
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(ss);
+    setInterval(() => { if (visible && !hover && !document.hidden) show(i + 1); }, secs * 1000);
+  }
   ss.tabIndex = 0;
   ss.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') show(i - 1);
@@ -30,17 +39,12 @@ document.querySelectorAll('.slideshow').forEach((ss) => {
   });
 });
 
-// Testimonials carousel
-document.querySelectorAll('.t-carousel').forEach((c) => {
-  const slides = [...c.querySelectorAll('.t-slide')];
-  let i = 0;
-  const show = (n) => {
-    i = (n + slides.length) % slides.length;
-    slides.forEach((s, k) => s.classList.toggle('is-active', k === i));
-  };
-  c.querySelector('.t-prev').addEventListener('click', () => show(i - 1));
-  c.querySelector('.t-next').addEventListener('click', () => show(i + 1));
-});
+// Background video: respect reduced-motion preference
+const bgVideo = document.querySelector('.bg-video');
+if (bgVideo && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  bgVideo.removeAttribute('autoplay');
+  bgVideo.pause();
+}
 
 // Mobile menu
 const toggle = document.querySelector('.menu-toggle');
