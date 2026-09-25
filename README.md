@@ -3,23 +3,27 @@
 Static rebuild of [geometrymurals.com](https://geometrymurals.com), migrated off Squarespace. Plain HTML/CSS/JS, hosted on GitHub Pages with no build step.
 
 ```
-index.html          Home
+index.html          Home (background video hero)
 murals/             Murals
 fineart/            Fine Art
 clothing/           Clothing (links out to geometry.bigcartel.com)
 contact/            Contact
 fine-art/, shop/    Redirects for old links
-assets/style.css    All styles
-assets/site.js      Slideshows, testimonials, mobile menu, form submit
-images/             Full-size images (max 1800–2000px)
-images/thumbs/      400px slideshow thumbnails
+assets/style.css    Theme, type scale, slideshow/form/block styles
+assets/site.js      Slideshows (autoplay on home), mobile menu, form submit, video
+images/             Full-size images; images/thumbs/ = 400px slideshow thumbnails
+video/              Hero video (hero.mp4 1080p, hero-mobile.mp4, hero-poster.jpg)
 ```
 
-## Editing
+## How the layout works
 
-- **Text:** edit the HTML directly.
-- **Add a slideshow image:** drop the file in `images/`, add a 400px copy to `images/thumbs/`, then copy an existing `<img class="ss-slide">` and `<button class="ss-thumb">` pair (bump `data-i`).
+Each page keeps the original Squarespace grid. The `<style>` block in each page's `<head>` holds the grid rules copied from Squarespace (`.fe-…` for each section's 24-column grid, `.fe-block-…` for each block's `grid-area`, desktop and mobile). That's why every photo, gallery and text box keeps its original size, shape and position.
+
+- **Text:** edit it directly inside the matching `fe-block` in the page HTML.
+- **Move or resize a block:** change that block's `grid-area: row-start / col-start / row-end / col-end` in the page's `<style>` (columns 2–25 are the content area; the rule inside `@media (min-width: 768px)` is desktop).
+- **Add a slideshow image:** put the file in `images/` and a 400px copy in `images/thumbs/`, then copy an existing `<img class="ss-slide …">` and `<button class="ss-thumb" data-i="…">` pair (bump `data-i`).
 - **Colours and fonts:** CSS variables at the top of `assets/style.css`.
+- **Cache-busting:** pages load `style.css?v=…` / `site.js?v=…`. After editing either file, bump the `v=` value in the five pages so visitors get the new version straight away.
 
 ## Forms
 
